@@ -1,0 +1,13 @@
+[tools]
+yazi = "latest"
+chezmoi = "latest"
+
+[tasks.init]
+depends = ["init:*"]
+
+[tasks."init:yazi"]
+run = "ya pkg add yazi-rs/flavors:catppuccin-mocha"
+
+[tasks."init:chezmoi"]
+run = "chezmoi init --apply https://github.com/njust/dotfiles.git"
+
