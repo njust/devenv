@@ -1,9 +1,15 @@
 [tools]
 yazi = "latest"
 chezmoi = "latest"
+rust = "latest"
+helix= "latest"
+
 
 [tasks.init]
 depends = ["init:*"]
+
+[tasks."init:rust"]
+run = "rustup component add rust-analyzer"
 
 [tasks."init:yazi"]
 run = "ya pkg add yazi-rs/flavors:catppuccin-mocha"
