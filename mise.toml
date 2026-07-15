@@ -1,12 +1,102 @@
+[tasks.system-deps]
+description = "Install system dependencies needed by mise tool installers"
+dir = "{{ config_root }}"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+needs_install=0
+
+if ! command -v curl >/dev/null 2>&1 && ! command -v wget >/dev/null 2>&1; then
+  needs_install=1
+fi
+
+if [ "{{ os() }}" = "linux" ]; then
+  if ! command -v cc >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
+    needs_install=1
+  fi
+fi
+
+if [ "$needs_install" -eq 0 ]; then
+  exit 0
+fi
+
+if [ "{{ os() }}" != "linux" ] || ! command -v apt-get >/dev/null 2>&1; then
+  echo "error: missing required system dependencies" >&2
+  echo "required: curl or wget, cc, git" >&2
+  exit 1
+fi
+
+packages="curl ca-certificates build-essential git"
+
+if [ "$(id -u)" -eq 0 ]; then
+  apt-get update
+  apt-get install -y $packages
+elif command -v sudo >/dev/null 2>&1; then
+  sudo apt-get update
+  sudo apt-get install -y $packages
+else
+  echo "error: system dependencies are missing and sudo is unavailable" >&2
+  echo "run: apt-get update && apt-get install -y $packages" >&2
+  exit 1
+fi
+'''
+
 [tasks.tools-install]
 description = "Install tools from the dotfiles mise config"
+depends = ["system-deps"]
 dir = "{{ config_root }}"
 env = { MISE_GLOBAL_CONFIG_FILE = "mise/config.toml" }
 run = "mise install"
 
+[tasks.dotter-local-config]
+description = "Create a default local Dotter config if missing"
+dir = "{{ config_root }}"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ -f .dotter/local.toml ]; then
+  exit 0
+fi
+
+mkdir -p .dotter
+
+case "{{ os() }}" in
+  macos) includes='includes = [".dotter/macos.toml"]' ;;
+  *) includes='' ;;
+esac
+
+{
+  if [ -n "$includes" ]; then
+    echo "$includes"
+  fi
+  echo 'packages = ["default"]'
+  echo
+  echo '[files]'
+  echo
+  echo '[variables]'
+} > .dotter/local.toml
+'''
+run_windows = '''
+if (Test-Path ".dotter\local.toml") {
+  exit 0
+}
+
+New-Item -ItemType Directory -Force -Path ".dotter" | Out-Null
+@'
+includes = [".dotter/windows.toml"]
+packages = ["default"]
+
+[files]
+
+[variables]
+'@ | Set-Content -Path ".dotter\local.toml"
+'''
+
 [tasks.init]
 description = "Install tools and deploy dotfiles"
-depends = ["tools-install"]
+depends = ["tools-install", "dotter-local-config"]
 dir = "{{ config_root }}"
 env = { MISE_GLOBAL_CONFIG_FILE = "mise/config.toml" }
 run = "mise exec -- dotter deploy"
