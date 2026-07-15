@@ -1,3 +1,6 @@
+[settings.task]
+run_auto_install = false
+
 [tasks.system-deps]
 description = "Install system dependencies needed by mise tool installers"
 dir = "{{ config_root }}"
