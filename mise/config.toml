@@ -1,0 +1,7 @@
+[tools]
+zellij = "latest"
+"aqua:nushell/nushell" = "latest"
+pi = "latest"
+rust = "stable"
+rust-analyzer = "latest"
+"cargo:dotter" = { version = "latest", depends = ["rust"] }

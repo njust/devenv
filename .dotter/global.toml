@@ -1,0 +1,19 @@
+[helpers]
+
+[default]
+depends = []
+
+[default.files]
+# Default/Linux targets. Platform-specific files in this directory override only
+# the entries that differ on that platform.
+"alacritty" = "~/.config/alacritty"
+"helix" = "~/.config/helix"
+"nushell" = "~/.config/nushell"
+"mise" = "~/.config/mise"
+"zellij" = "~/.config/zellij"
+"pi" = "~/.pi/agent"
+
+[default.variables]
+
+[settings]
+default_target_type = "automatic"

@@ -1,0 +1,5 @@
+[default.files]
+"alacritty" = "~/AppData/Roaming/alacritty"
+"helix" = "~/AppData/Roaming/helix"
+"nushell" = "~/AppData/Roaming/nushell"
+"zellij" = "~/AppData/Roaming/Zellij/config"

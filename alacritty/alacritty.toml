@@ -1,0 +1,19 @@
+{{#if dotter.macos}}
+[env]
+# Make sure homebrew bin dir is in path on macOS
+PATH = "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+{{/if}}
+
+[terminal.shell]
+program = "mise"
+args = ["exec", "--", "zellij"]
+
+[font]
+size = 15
+
+[colors.primary]
+background = "#1f2430"
+
+[window]
+option_as_alt = "Both"
+startup_mode = "Maximized"

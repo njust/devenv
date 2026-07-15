@@ -1,0 +1,12 @@
+[tasks.tools-install]
+description = "Install tools from the dotfiles mise config"
+dir = "{{ config_root }}"
+env = { MISE_GLOBAL_CONFIG_FILE = "mise/config.toml" }
+run = "mise install"
+
+[tasks.init]
+description = "Install tools and deploy dotfiles"
+depends = ["tools-install"]
+dir = "{{ config_root }}"
+env = { MISE_GLOBAL_CONFIG_FILE = "mise/config.toml" }
+run = "mise exec -- dotter deploy"
