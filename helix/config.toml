@@ -34,12 +34,10 @@ display-inlay-hints = true
 "A-+" = "switch_to_uppercase"
 "A-s" = ":write-all"
 
-{{#if dotter.macos}}
-"A-c" = ":sh printf '%{buffer_name}:%{cursor_line}' | pbcopy"
-{{else if dotter.linux}}
-"A-c" = ":sh printf '%{buffer_name}:%{cursor_line}' | xclip -selection clipboard"
-{{else if dotter.windows}}
-"A-c" = ":sh powershell Set-Clipboard -Value '%{buffer_name}:%{cursor_line}'"
+{{#if dotter.windows}}
+"A-c" = ''':sh powershell -NoProfile -Command "$text = $args[0]; $encoded = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($text)); [Console]::Out.Write(([char]27 + ']52;c;' + $encoded + [char]7))" "%{buffer_name}:%{cursor_line}"'''
+{{else}}
+"A-c" = ''':sh sh -c 'text="$1"; printf "\033]52;c;%%s\a" "$(printf "%%s" "$text" | base64 | tr -d "\n")" > /dev/tty' sh "%{buffer_name}:%{cursor_line}"'''
 {{/if}}
 
 "A-e" = "half_page_up"
