@@ -23,7 +23,11 @@ $env.EDITOR = 'hx'
 
 
 def helix-config-dir [] {
+    {{#if dotter.windows}}
+    '{{lookup dotter.files "helix\\config.toml"}}' | path dirname
+    {{else}}
     '{{lookup dotter.files "helix/config.toml"}}' | path dirname
+    {{/if}}
 }
 
 

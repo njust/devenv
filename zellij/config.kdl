@@ -4,7 +4,7 @@
 
 keybinds clear-defaults=true {
     locked {
-        bind "Ctrl Alt g" { SwitchToMode "normal"; }
+        bind "Alt Shift g" { SwitchToMode "normal"; }
     }
     pane {
         bind "left" { MoveFocus "left"; }
@@ -22,7 +22,7 @@ keybinds clear-defaults=true {
         bind "l" { MoveFocus "right"; }
         bind "n" { NewPane; SwitchToMode "normal"; }
         bind "p" { SwitchFocus; }
-        bind "Ctrl Alt p" { SwitchToMode "normal"; }
+        bind "Alt Shift p" { SwitchToMode "normal"; }
         bind "r" { NewPane "right"; SwitchToMode "normal"; }
         bind "s" { NewPane "stacked"; SwitchToMode "normal"; }
         bind "w" { ToggleFloatingPanes; SwitchToMode "normal"; }
@@ -52,7 +52,7 @@ keybinds clear-defaults=true {
         bind "n" { NewTab; SwitchToMode "normal"; }
         bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
         bind "s" { ToggleActiveSyncTab; SwitchToMode "normal"; }
-        bind "Ctrl Alt t" { SwitchToMode "normal"; }
+        bind "Alt Shift t" { SwitchToMode "normal"; }
         bind "x" { CloseTab; SwitchToMode "normal"; }
         bind "tab" { ToggleTab; }
     }
@@ -72,7 +72,7 @@ keybinds clear-defaults=true {
         bind "j" { Resize "Increase down"; }
         bind "k" { Resize "Increase up"; }
         bind "l" { Resize "Increase right"; }
-        bind "Ctrl Alt n" { SwitchToMode "normal"; }
+        bind "Alt Shift n" { SwitchToMode "normal"; }
     }
     move {
         bind "left" { MovePane "left"; }
@@ -80,7 +80,7 @@ keybinds clear-defaults=true {
         bind "up" { MovePane "up"; }
         bind "right" { MovePane "right"; }
         bind "h" { MovePane "left"; }
-        bind "Ctrl Alt h" { SwitchToMode "normal"; }
+        bind "Alt Shift h" { SwitchToMode "normal"; }
         bind "j" { MovePane "down"; }
         bind "k" { MovePane "up"; }
         bind "l" { MovePane "right"; }
@@ -99,7 +99,7 @@ keybinds clear-defaults=true {
         bind "Alt k" { MoveFocus "up"; SwitchToMode "normal"; }
         bind "Alt l" { MoveFocusOrTab "right"; SwitchToMode "normal"; }
         bind "s" { SwitchToMode "entersearch"; SearchInput 0; }
-        bind "Ctrl Alt s" { SwitchToMode "normal"; }
+        bind "Alt Shift s" { SwitchToMode "normal"; }
     }
     search {
         bind "c" { SearchToggleOption "CaseSensitivity"; }
@@ -130,7 +130,7 @@ keybinds clear-defaults=true {
             }
             SwitchToMode "normal"
         }
-        bind "Ctrl Alt o" { SwitchToMode "normal"; }
+        bind "Alt Shift o" { SwitchToMode "normal"; }
         bind "p" {
             LaunchOrFocusPlugin "plugin-manager" {
                 floating true
@@ -177,29 +177,29 @@ keybinds clear-defaults=true {
         bind "Alt Shift p" { ToggleGroupMarking; }
     }
     shared_except "locked" "entersearch" "renametab" "renamepane" "move" "prompt" "tmux" {
-        bind "Ctrl Alt h" { SwitchToMode "move"; }
+        bind "Alt Shift h" { SwitchToMode "move"; }
     }
     shared_except "locked" "entersearch" "renametab" "renamepane" "prompt" "tmux" {
-        bind "Ctrl Alt g" { SwitchToMode "locked"; }
-        bind "Ctrl Alt q" { Quit; }
+        bind "Alt Shift g" { SwitchToMode "locked"; }
+        bind "Alt Shift q" { Quit; }
     }
     shared_except "locked" "entersearch" "renametab" "renamepane" "session" "prompt" "tmux" {
-        bind "Ctrl Alt o" { SwitchToMode "session"; }
+        bind "Alt Shift o" { SwitchToMode "session"; }
     }
     shared_except "locked" "scroll" "search" "tmux" {
         bind "Ctrl b" { SwitchToMode "tmux"; }
     }
     shared_except "locked" "scroll" "entersearch" "renametab" "renamepane" "prompt" "tmux" {
-        bind "Ctrl Alt s" { SwitchToMode "scroll"; }
+        bind "Alt Shift s" { SwitchToMode "scroll"; }
     }
     shared_except "locked" "tab" "entersearch" "renametab" "renamepane" "prompt" "tmux" {
-        bind "Ctrl Alt t" { SwitchToMode "tab"; }
+        bind "Alt Shift t" { SwitchToMode "tab"; }
     }
     shared_except "locked" "pane" "entersearch" "renametab" "renamepane" "prompt" "tmux" {
-        bind "Ctrl Alt p" { SwitchToMode "pane"; }
+        bind "Alt Shift p" { SwitchToMode "pane"; }
     }
     shared_except "locked" "resize" "entersearch" "renametab" "renamepane" "prompt" "tmux" {
-        bind "Ctrl Alt n" { SwitchToMode "resize"; }
+        bind "Alt Shift n" { SwitchToMode "resize"; }
     }
     shared_except "normal" "locked" {
         bind "Alt +" { Resize "Increase"; }

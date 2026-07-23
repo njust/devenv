@@ -44,6 +44,7 @@ else
   exit 1
 fi
 '''
+run_windows = "echo System dependencies are not managed by this task on Windows"
 
 [tasks.tools-install]
 description = "Install tools from the dotfiles mise config"
@@ -52,54 +53,35 @@ dir = "{{ config_root }}"
 env = { MISE_GLOBAL_CONFIG_FILE = "mise/config.toml" }
 run = "mise install"
 
-[tasks.dotter-local-config]
-description = "Create a default local Dotter config if missing"
+[tasks.init]
+description = "Install tools and deploy dotfiles"
+depends = ["tools-install"]
 dir = "{{ config_root }}"
+env = { MISE_GLOBAL_CONFIG_FILE = "mise/config.toml" }
 run = '''
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ -f .dotter/local.toml ]; then
-  exit 0
+if [ ! -f .dotter/local.toml ]; then
+  mkdir -p .dotter
+
+  case "{{ os() }}" in
+    macos) includes='includes = [".dotter/macos.toml"]' ;;
+    *) includes='' ;;
+  esac
+
+  {
+    if [ -n "$includes" ]; then
+      echo "$includes"
+    fi
+    echo 'packages = ["default"]'
+    echo
+    echo '[files]'
+    echo
+    echo '[variables]'
+  } > .dotter/local.toml
 fi
 
-mkdir -p .dotter
-
-case "{{ os() }}" in
-  macos) includes='includes = [".dotter/macos.toml"]' ;;
-  *) includes='' ;;
-esac
-
-{
-  if [ -n "$includes" ]; then
-    echo "$includes"
-  fi
-  echo 'packages = ["default"]'
-  echo
-  echo '[files]'
-  echo
-  echo '[variables]'
-} > .dotter/local.toml
+mise exec -- dotter deploy
 '''
-run_windows = '''
-if (Test-Path ".dotter\local.toml") {
-  exit 0
-}
-
-New-Item -ItemType Directory -Force -Path ".dotter" | Out-Null
-@'
-includes = [".dotter/windows.toml"]
-packages = ["default"]
-
-[files]
-
-[variables]
-'@ | Set-Content -Path ".dotter\local.toml"
-'''
-
-[tasks.init]
-description = "Install tools and deploy dotfiles"
-depends = ["tools-install", "dotter-local-config"]
-dir = "{{ config_root }}"
-env = { MISE_GLOBAL_CONFIG_FILE = "mise/config.toml" }
-run = "mise exec -- dotter deploy"
+run_windows = "call scripts\\init-windows.cmd"
