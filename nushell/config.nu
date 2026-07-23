@@ -21,6 +21,24 @@ $env.config.show_banner = false
 $env.config.ls.use_ls_colors = false
 $env.EDITOR = 'hx'
 
+use ($nu.default-config-dir | path join mise.nu)
+
+def "dev test run" [name: string@test_list_args] {
+    cargo nextest run --no-capture -E $"test\(=($name)\)" 
+}
+
+def "dev test run-all" [] {
+    cargo nextest run
+}
+
+def test_list_args  [] {
+    cargo nextest list -T oneline e> /dev/null | lines | parse "{package} {test}" | get test
+}
+
+def "dev test list" [] {
+    cargo nextest list -T oneline | collect | lines | parse "{package} {test}"
+}
+
 
 def helix-config-dir [] {
     {{#if dotter.windows}}
